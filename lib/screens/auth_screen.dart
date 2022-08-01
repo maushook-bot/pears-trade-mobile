@@ -556,7 +556,7 @@ class _AuthCardState extends State<AuthCard>
                   return 'Email is empty!';
                 } else if (EmailValidator.validate(value) == false) {
                   return 'Email is invalid!';
-                } else if (value.split('@')[1] != 'tnsinc.com') {
+                } else if (value.split('@')[1] != 'brainvaulttech.com') {
                   return 'Invalid Domain. Try Again!';
                 } else {
                   return null;
@@ -667,7 +667,7 @@ class _AuthCardState extends State<AuthCard>
                   validator: _authMode == AuthMode.SignUp
                       ? (value) {
                           if (value != _passwordController.text) {
-                            return 'Passwords do not match schmuck!';
+                            return 'Passwords do not match!';
                           }
                           return null;
                         }
@@ -691,9 +691,9 @@ class _AuthCardState extends State<AuthCard>
                 : Container(),
             _authMode == AuthMode.SignUp
                 ? Container(
-                    width: deviceSize.width * 0.56,
+                    width: deviceSize.width * 0.58,
                     child: LinearProgressIndicator(
-                      minHeight: 1,
+                      minHeight: 1.5,
                       value: _passStrength,
                       color: _passStrength <= 1 / 4
                           ? Colors.red
@@ -780,7 +780,7 @@ class _AuthCardState extends State<AuthCard>
         minHeight: deviceSize.height * 0.05,
         minWidth: deviceSize.height * 0.75,
       ),
-      color: Colors.blueGrey.withOpacity(0.1),
+      color: Colors.blueGrey.withOpacity(0.2),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
