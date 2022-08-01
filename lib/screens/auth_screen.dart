@@ -433,7 +433,7 @@ class _AuthCardState extends State<AuthCard>
             _authMode == AuthMode.Login
                 ? 'Welcome Back | Enter your details'
                 : 'Enter your details to create an account',
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
       ],
@@ -452,9 +452,9 @@ class _AuthCardState extends State<AuthCard>
         color:
             Colors.white.withOpacity(0.1), //Color(0x192841).withOpacity(0.4),
         margin: EdgeInsets.only(
-          right: deviceSize.width * 0.05,
+          right: deviceSize.width * 0.0,
           top: deviceSize.height * 0.0,
-          left: deviceSize.width * 0.05,
+          left: deviceSize.width * 0.0,
         ),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 500),

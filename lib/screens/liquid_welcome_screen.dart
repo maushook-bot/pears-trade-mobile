@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:pears_trade/pallete/hulk.dart';
 import 'package:pears_trade/screens/auth_screen.dart';
 import 'package:pears_trade/figma/signup_screen.dart';
 import 'package:pears_trade/screens/welcome.dart';
@@ -30,7 +31,7 @@ class _LiquidWelcomeScreenState extends State<LiquidWelcomeScreen> {
       positionSlideIcon: 0.5,
       slideIconWidget: Icon(
         EvaIcons.chevronLeft,
-        color: Colors.deepOrange,
+        color: Hulk.kToDark,
         size: 40,
       ),
     );

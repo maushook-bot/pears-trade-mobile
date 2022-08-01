@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pears_trade/helpers/custom_route.dart';
 import 'package:pears_trade/pallete/deepBlue.dart';
+import 'package:pears_trade/pallete/hulk.dart';
 import 'package:pears_trade/screens/auth_screen.dart';
 
 class Welcome extends StatefulWidget {
@@ -58,6 +59,12 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
               ),
             ),
           ),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/dw-07.png',
+              fit: BoxFit.contain,
+            ),
+          ),
           const Center(),
           Container(
             margin: const EdgeInsets.only(left: 25),
@@ -107,7 +114,7 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
                     style: ElevatedButton.styleFrom(
                         fixedSize: const Size(199, 50),
                         //primary: const Color(0xffC65466),
-                        primary: DeepBlue.kToDark,
+                        primary: Hulk.kToDark,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18))),
                     child: Row(
