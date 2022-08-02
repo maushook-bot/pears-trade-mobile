@@ -93,8 +93,8 @@ class _AuthCardState extends State<AuthCard>
   /// Obscure Password:-
   bool _passwordObscure = true;
 
-  /// Seller Info:
-  bool _isSeller = false;
+  /// Don't Remember Flag:
+  bool _notRememberFlag = false;
 
   /// Control Button views:-
   bool _emailClick = false;
@@ -486,17 +486,12 @@ class _AuthCardState extends State<AuthCard>
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        borderSide: BorderSide(
-                            color: Hulk.kToDark,
-                            width: 2.0
-                        ),
+                        borderSide: BorderSide(color: Hulk.kToDark, width: 2.0),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        borderSide: BorderSide(
-                            color: Hulk.kToDark.shade50,
-                            width: 1.0
-                        ),
+                        borderSide:
+                            BorderSide(color: Hulk.kToDark.shade50, width: 1.0),
                       ),
                       labelText: 'Enter Name',
                       focusColor: Colors.blueGrey,
@@ -528,17 +523,12 @@ class _AuthCardState extends State<AuthCard>
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                      color: Hulk.kToDark,
-                      width: 2.0
-                  ),
+                  borderSide: BorderSide(color: Hulk.kToDark, width: 2.0),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Hulk.kToDark.shade50,
-                    width: 1.0
-                  ),
+                  borderSide:
+                      BorderSide(color: Hulk.kToDark.shade50, width: 1.0),
                 ),
                 labelText: 'Enter Email',
                 focusColor: Hulk.kToDark,
@@ -571,17 +561,12 @@ class _AuthCardState extends State<AuthCard>
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                      color: Hulk.kToDark,
-                      width: 2.0
-                  ),
+                  borderSide: BorderSide(color: Hulk.kToDark, width: 2.0),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                      color: Hulk.kToDark.shade50,
-                      width: 1.0
-                  ),
+                  borderSide:
+                      BorderSide(color: Hulk.kToDark.shade50, width: 1.0),
                 ),
                 labelText: 'Enter Password',
                 icon: Icon(Icons.lock_outlined, color: Hulk.kToDark),
@@ -612,7 +597,52 @@ class _AuthCardState extends State<AuthCard>
               onChanged: (value) => _checkPassword(value),
               onSaved: (value) => _authData['password'] = value,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
+            _authMode == AuthMode.Login
+                ? Container(
+                    width: deviceSize.width,
+                    child: Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _notRememberFlag = !_notRememberFlag;
+                            });
+                          },
+                          icon: Icon(
+                            _notRememberFlag
+                                ? Icons.check_box_rounded
+                                : Icons.check_box_outline_blank,
+                            color: _notRememberFlag
+                                ? Colors.greenAccent
+                                : Hulk.kToDark,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: deviceSize.width * 0.08),
+                          child: Text(
+                            "Don't remember me",
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade800,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Forgot Password',
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade800,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
             AnimatedContainer(
               constraints: BoxConstraints(
                 minHeight: _authMode == AuthMode.SignUp ? 60 : 0,
@@ -627,17 +657,12 @@ class _AuthCardState extends State<AuthCard>
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                          color: Hulk.kToDark,
-                          width: 2.0
-                      ),
+                      borderSide: BorderSide(color: Hulk.kToDark, width: 2.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                          color: Hulk.kToDark.shade50,
-                          width: 1.0
-                      ),
+                      borderSide:
+                          BorderSide(color: Hulk.kToDark.shade50, width: 1.0),
                     ),
                     labelText: 'Confirm Password',
                     suffixIcon: IconButton(
@@ -706,10 +731,11 @@ class _AuthCardState extends State<AuthCard>
                     ),
                   )
                 : Container(),
+            SizedBox(height: 10),
             _authMode == AuthMode.SignUp
                 ? _buildPasswordHelper(context, deviceSize)
                 : Container(),
-            SizedBox(height: 14),
+            SizedBox(height: 10),
             _isLoading == true
                 ? CircularProgressIndicator()
                 : Container(
@@ -735,6 +761,7 @@ class _AuthCardState extends State<AuthCard>
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
+            SizedBox(height: 10),
             _buildSignInContent(deviceSize),
             _builderCardFooter(deviceSize),
           ],
