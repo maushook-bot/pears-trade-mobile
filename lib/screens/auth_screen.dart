@@ -212,6 +212,7 @@ class _AuthCardState extends State<AuthCard>
 
     try {
       if (_authMode == AuthMode.Login) {
+        _emailClickHandler();
         // TODO: Log User In
         await Provider.of<Auth>(context, listen: false)
             .login(_authData['email'], _authData['password'],
@@ -226,6 +227,7 @@ class _AuthCardState extends State<AuthCard>
           },
         );
       } else {
+        _emailClickHandler();
         // TODO: Sign Up User
         await Provider.of<Auth>(context, listen: false)
             .signup(_authData['email'], _authData['password'], 'signUp',
@@ -620,7 +622,8 @@ class _AuthCardState extends State<AuthCard>
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(right: deviceSize.width * 0.08),
+                          margin:
+                              EdgeInsets.only(right: deviceSize.width * 0.08),
                           child: Text(
                             "Don't remember me",
                             style: TextStyle(
@@ -758,7 +761,10 @@ class _AuthCardState extends State<AuthCard>
                           _authMode == AuthMode.Login
                               ? "Login with Email"
                               : "Create an account",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ),
                   ),
             SizedBox(height: 10),

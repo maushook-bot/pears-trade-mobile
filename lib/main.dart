@@ -1,5 +1,5 @@
 /// @@@ PEARS TRADE APP @@@
-/// @@@ version: 0.0-beta @@@
+/// @@@ version: 0.1-beta @@@
 /// @@@ Environment: local @@@
 /// @@@ App Features: Inception ✨
 /// @@@ WebServer: GCP @@@

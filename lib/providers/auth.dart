@@ -61,56 +61,67 @@ class Auth with ChangeNotifier {
       bool isEmailSignIn) async {
     final String API_KEY = dotenv.env['API_KEY'];
     final String SECRET_KEY = dotenv.env['SECRET_KEY'];
+    print('API-KEY: $API_KEY');
 
-    /// Email SignIn
-    print('Inside Email Sign In: $isEmailSignIn');
-    final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/accounts:${urlSegment}?key=$API_KEY');
+    if (isEmailSignIn) {
+      /// Email SignIn
+      print('Inside Email Sign In: $isEmailSignIn');
+      final url = Uri.parse(
+          'https://identitytoolkit.googleapis.com/v1/accounts:${urlSegment}?key=$API_KEY');
 
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
+      try {
+        final response = await http.post(
+          url,
+          body: json.encode(
+            {
+              'email': email,
+              'password': password,
+              'returnSecureToken': true,
+            },
+          ),
+        );
+        var responseData = json.decode(response.body);
+
+        if (responseData['error'] != null) {
+          throw HttpException(message: responseData['error']['message']);
+        }
+
+        /// Save Token and Expiry date:-
+        _token = responseData['idToken'];
+        _uid = responseData['localId'];
+        _expiryDate = DateTime.now().add(
+          Duration(seconds: int.parse(responseData['expiresIn'])),
+          //_expiryDate = DateTime.now().add(
+          //  Duration(seconds: 6),
+        );
+
+        // Auto-Logout will be triggered after token expiry:-
+        _autoLogout();
+        notifyListeners();
+
+        /// Shared Pref to Store/Get data from Device:-
+        final prefs = await SharedPreferences.getInstance();
+        final userData = json.encode(
           {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
+            'token': _token,
+            'userId': _uid,
+            'expiryDate': _expiryDate.toIso8601String(),
           },
-        ),
-      );
-      var responseData = json.decode(response.body);
-
-      if (responseData['error'] != null) {
-        throw HttpException(message: responseData['error']['message']);
+        );
+        prefs.setString('userData', userData);
+      } catch (error) {
+        throw error;
       }
-
-      /// Save Token and Expiry date:-
-      _token = responseData['idToken'];
-      _uid = responseData['localId'];
-      _expiryDate = DateTime.now().add(
-        Duration(seconds: int.parse(responseData['expiresIn'])),
-        //_expiryDate = DateTime.now().add(
-        //  Duration(seconds: 6),
-      );
-
-      // Auto-Logout will be triggered after token expiry:-
-      _autoLogout();
+    } else {
+      /// Google SignIn
+      print('Inside Google Sign In: ${!isEmailSignIn}');
+      _token = SECRET_KEY;
+      _uid = googleUid;
       notifyListeners();
-
-      /// Shared Pref to Store/Get data from Device:-
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode(
-        {
-          'token': _token,
-          'userId': _uid,
-          'expiryDate': _expiryDate.toIso8601String(),
-        },
-      );
-      prefs.setString('userData', userData);
-    } catch (error) {
-      rethrow;
     }
   }
+
+
 
   Future<void> signup(String email, String password, String urlSegment,
       bool isEmailSignIn) async {
