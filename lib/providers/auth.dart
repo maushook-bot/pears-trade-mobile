@@ -57,6 +57,10 @@ class Auth with ChangeNotifier {
     return _uid;
   }
 
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
   Future<void> _authenticate(String email, String password, String urlSegment,
       bool isEmailSignIn) async {
     final String API_KEY = dotenv.env['API_KEY'];
@@ -131,6 +135,17 @@ class Auth with ChangeNotifier {
   Future<void> login(String email, String password, String urlSegment,
       bool isEmailSignIn) async {
     return _authenticate(email, password, urlSegment, isEmailSignIn);
+  }
+
+  Future<void> dejaVuInstance(bool isRememberMe) async {
+   if (!isRememberMe) {
+     print('User Preferences => Retained');
+     return;
+   }
+   final prefs = await SharedPreferences.getInstance();
+   prefs.remove('userData');
+   prefs.clear();
+   print('User Preferences => Cleared');
   }
 
   void logout() async {

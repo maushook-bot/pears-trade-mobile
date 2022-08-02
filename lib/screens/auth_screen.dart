@@ -2,6 +2,7 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:pears_trade/helpers/alert_dialog.dart';
 import 'package:pears_trade/models/http_exception.dart';
 import 'package:pears_trade/pallete/hulk.dart';
 import 'package:pears_trade/providers/auth.dart';
@@ -15,50 +16,9 @@ class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: AuthCard(),
-    );
-  }
-
-  Widget _buildTopHeader(BuildContext context, Size deviceSize) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: deviceSize.height * 0.13,
-          margin: EdgeInsets.only(
-              top: deviceSize.height * 0.12, left: deviceSize.width * 0.04),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
-            ),
-          ),
-          child: Text(
-            'Log In',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          height: deviceSize.height * 0.13,
-          margin: EdgeInsets.only(
-              top: deviceSize.height * 0.20, left: deviceSize.width * 0.04),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
-            ),
-          ),
-          child: Text(
-            'Welcome Back | Enter your details',
-            style: TextStyle(color: Colors.white, fontSize: 14),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -73,6 +33,7 @@ class _AuthCardState extends State<AuthCard>
   final _form = GlobalKey<FormState>();
   AuthMode _authMode = AuthMode.Login;
   Map<String, dynamic> _authData = {
+    'name': '',
     'email': '',
     'password': '',
   };
@@ -201,7 +162,21 @@ class _AuthCardState extends State<AuthCard>
     );
   }
 
+  void _showAlertDialog(String message) {
+    print('Inside ShowAlertDialog');
+    showDialog<Null>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialogBox(
+          title: 'Alert',
+          alertMessage: message,
+        );
+      },
+    );
+  }
+
   Future<void> _submit() async {
+    final _authProviderData = Provider.of<Auth>(context, listen: false);
     if (!_form.currentState.validate()) {
       return;
     }
@@ -209,6 +184,9 @@ class _AuthCardState extends State<AuthCard>
     setState(() {
       _isLoading = true;
     });
+
+    /// Remove user pref if _notRememberFlag is True
+    await _authProviderData.dejaVuInstance(_notRememberFlag);
 
     try {
       if (_authMode == AuthMode.Login) {
@@ -477,6 +455,7 @@ class _AuthCardState extends State<AuthCard>
   }
 
   Widget _buildEmailForm(Size deviceSize) {
+    final authProviderData = Provider.of<Auth>(context, listen: false);
     return Form(
       key: _form,
       child: SingleChildScrollView(
@@ -633,7 +612,12 @@ class _AuthCardState extends State<AuthCard>
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await authProviderData
+                                .resetPassword(_authData['email']);
+                            _showAlertDialog(
+                                'Please check your email for password reset confirmation');
+                          },
                           child: Text(
                             'Forgot Password',
                             style: TextStyle(

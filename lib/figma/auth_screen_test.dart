@@ -150,6 +150,29 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 
+  void _showAlertDialog(String message) {
+    print('Inside ShowAlertDialog');
+    showDialog<Null>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('Alert', textAlign: TextAlign.center),
+          content: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Text('$message', textAlign: TextAlign.center),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text('Close'),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+
   Future<void> _submit() async {
     if (!_form.currentState.validate()) {
       return;
@@ -618,7 +641,7 @@ class _AuthScreenState extends State<AuthScreen>
                   validator: _authMode == AuthMode.SignUp
                       ? (value) {
                           if (value != _passwordController.text) {
-                            return 'Passwords do not match schmuck!';
+                            return 'Passwords do not match!';
                           }
                           return null;
                         }

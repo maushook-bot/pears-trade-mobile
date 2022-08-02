@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pears_trade/pallete/deepBlue.dart';
+import 'package:pears_trade/pallete/hulk.dart';
 
 class AlertDialogBox extends StatelessWidget {
   final String title;
@@ -15,7 +16,7 @@ class AlertDialogBox extends StatelessWidget {
     return AlertDialog(
       title: Container(
         width: double.infinity,
-        color: DeepBlue.kToDark,
+        color: Hulk.kToDark,
         child: Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child: Text(
