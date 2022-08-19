@@ -144,7 +144,8 @@ class Auth with ChangeNotifier {
    }
    final prefs = await SharedPreferences.getInstance();
    prefs.remove('userData');
-   prefs.clear();
+   await prefs.clear();
+   print('pref-keys @dejaVu => ${prefs.getKeys()}');
    print('User Preferences => Cleared');
   }
 
@@ -181,8 +182,9 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
+    print('Inside AutoLogin loop');
     final prefs = await SharedPreferences.getInstance();
-
+    print('pref-keys: ${prefs.getKeys()}');
     if (!prefs.containsKey('userData')) {
       return false;
     }
